@@ -33,20 +33,20 @@ qa_chain = RetrievalQA.from_chain_type(
 )
 
 
-while True:
-    query = input("What's on your mind: ")
-    if query == 'exit':
-        break
-    result = qa_chain(query)
-    answer, docs = result['result'], result['source_documents']
+# while True:
+#     query = input("What's on your mind: ")
+#     if query == 'exit':
+#         break
+#     result = qa_chain(query)
+#     answer, docs = result['result'], result['source_documents']
 
-    print(answer)
+#     print(answer)
 
-    print("#"* 30, "Sources", "#"* 30)
-    for document in docs:
-        print("\n> SOURCE: " + document.metadata["source"] + ":")
-        print(document.page_content)
-    print("#"* 30, "Sources", "#"* 30)
+#     print("#"* 30, "Sources", "#"* 30)
+#     for document in docs:
+#         print("\n> SOURCE: " + document.metadata["source"] + ":")
+#         print(document.page_content)
+#     print("#"* 30, "Sources", "#"* 30)
 
 
 
