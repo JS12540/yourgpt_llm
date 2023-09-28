@@ -1,0 +1,27 @@
+1. Access to fetch {url} from Localhost is blocked by CORS policy:
+    Why: 
+    The error message you're encountering, "has been blocked by CORS policy," indicates that 
+    your frontend, running on http://localhost:3000, is trying to make a request to your backend, 
+    which is running on http://127.0.0.1:8000, and the browser is blocking the request due to
+    Cross-Origin Resource Sharing (CORS) policy restriction.
+
+    Solution: add the following code
+    {
+        from fastapi.middleware.cors import CORSMiddleware
+
+        app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["http://localhost:3000"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        )
+
+    }
+
+
+2. TimeoutError: [WinError 10060]:
+    Why: Usual network hold time 2-3 secs.
+    Potential Solution: 
+        a. async: run async for more time
+        b. host and run model on cloud.
