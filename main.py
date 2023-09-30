@@ -2,7 +2,7 @@ import asyncio
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi import FastAPI, UploadFile, File
 # Import necessary modules from docchat and related libraries
 from docchat import MyGPT4ALL
 from knowledgebase import PDFKnowledgeBase 
@@ -73,6 +73,12 @@ async def predict(query_request: QueryRequest):
         return response
     except Exception as e:
         return {"error": str(e)}
+    
+@app.post("/upload_files")
+async def upload(file: UploadFile = File(...)):
+    file_type = file.filename.split('.')[-1]
+    return file
+
 
 if __name__ == '__main__':
     import uvicorn
