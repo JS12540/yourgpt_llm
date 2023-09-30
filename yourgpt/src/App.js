@@ -3,22 +3,29 @@ import React, { useState } from 'react';
 function QueryForm() {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleQueryChange = (e) => {
     setQuery(e.target.value);
   };
 
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send the user query to the ML model (server-side)
+    // Create a FormData object to send both text data and files
+    const formData = new FormData();
+    formData.append('query', query);
+    formData.append('file', selectedFile);
+
+    // Send the user query and file to the server-side endpoint
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/your-ml-endpoint', {
+      const response = await fetch('http://127.0.0.1:8000/api/upload_files', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -34,13 +41,18 @@ function QueryForm() {
 
   return (
     <div>
-      <h1>ML Model Interaction</h1>
-      <form onSubmit={handleSubmit}>
+      <h1>ML Model Interaction with File Upload</h1>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           type="text"
           placeholder="Enter your query"
           value={query}
           onChange={handleQueryChange}
+        />
+        <input
+          type="file"
+          accept=".pdf,.txt,.docx" // Specify the allowed file types
+          onChange={handleFileChange}
         />
         <button type="submit">Submit</button>
       </form>
